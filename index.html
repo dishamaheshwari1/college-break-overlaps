@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Break Overlaps</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Calendar 2025-2026</h1>
+            <p>Toggle colleges to see overlapping breaks and holidays - hover over dates for details</p>
+        </header>
+
+        <div class="controls">
+            <div class="college-toggles">
+                <h3>Select Colleges:</h3>
+                <div class="toggle-grid">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="uga" checked>
+                        <span class="slider" data-color="#ba0c2f"></span>
+                        <span class="college-name">UGA</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="gatech" checked>
+                        <span class="slider" data-color="#b3a369"></span>
+                        <span class="college-name">Georgia Tech</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="yale" checked>
+                        <span class="slider" data-color="#00356b"></span>
+                        <span class="college-name">Yale</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="rutgers" checked>
+                        <span class="slider" data-color="#cc0033"></span>
+                        <span class="college-name">Rutgers</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="northeastern" checked>
+                        <span class="slider" data-color="#c8102e"></span>
+                        <span class="college-name">Northeastern</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="ucsd" checked>
+                        <span class="slider" data-color="#182b49"></span>
+                        <span class="college-name">UCSD</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="gsu" checked>
+                        <span class="slider" data-color="#003366"></span>
+                        <span class="college-name">GSU</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="uab" checked>
+                        <span class="slider" data-color="#1e6b52"></span>
+                        <span class="college-name">UAB</span>
+                    </label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="duke" checked>
+                        <span class="slider" data-color="#003366"></span>
+                        <span class="college-name">Duke</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="legend">
+                <h3>Legend:</h3>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-color legend-partial-overlap"></div>
+                        <span>Some Schools Overlap</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-full-overlap-solid"></div>
+                        <span>All Schools Overlap</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar-container">
+            <div id="calendar-grid"></div>
+        </div>
+
+        <div class="overlap-info">
+            <h3>Current Overlaps:</h3>
+            <div id="overlap-details"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
