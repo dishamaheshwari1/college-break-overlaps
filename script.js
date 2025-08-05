@@ -143,6 +143,44 @@ const academicData = {
       { start: "2026-05-01", end: "2026-05-02", name: "Commencement", type: "event" },
     ],
   },
+  purdue: {
+    name: "Purdue University",
+    color: "#792B8C", // A distinct purple for Purdue
+    breaks: [
+      // Semester Start/End (for data, not visual display)
+      { start: "2025-05-19", end: "2025-05-19", name: "Summer 2025 Begins", type: "semester-start" },
+      { start: "2025-08-08", end: "2025-08-08", name: "Summer 2025 Ends", type: "semester-end" },
+      { start: "2025-08-25", end: "2025-08-25", name: "Fall 2025 Begins", type: "semester-start" },
+      { start: "2025-12-20", end: "2025-12-20", name: "Fall 2025 Ends", type: "semester-end" },
+      { start: "2025-12-22", end: "2025-12-22", name: "Winter 2025 Begins", type: "semester-start" },
+      { start: "2026-01-09", end: "2026-01-09", name: "Winter 2025 Ends", type: "semester-end" },
+      { start: "2026-01-12", end: "2026-01-12", name: "Spring 2026 Begins", type: "semester-start" },
+      { start: "2026-05-09", end: "2026-05-09", name: "Spring 2026 Ends", type: "semester-end" },
+      { start: "2026-05-18", end: "2026-05-18", name: "Summer 2026 Begins", type: "semester-start" },
+      { start: "2026-08-07", end: "2026-08-07", name: "Summer 2026 Ends", type: "semester-end" },
+
+      // Breaks and Holidays (for visual display and overlap calculation)
+      { start: "2025-10-13", end: "2025-10-14", name: "Fall Break", type: "break" },
+      { start: "2025-11-26", end: "2025-11-29", name: "Thanksgiving Break", type: "break" },
+      { start: "2025-12-26", end: "2025-12-31", name: "Winter Recess", type: "break" },
+      { start: "2026-03-16", end: "2026-03-21", name: "Spring Break", type: "break" },
+      { start: "2025-05-26", end: "2025-05-26", name: "Memorial Day", type: "holiday" },
+      { start: "2025-07-04", end: "2025-07-04", name: "Fourth of July", type: "holiday" },
+      { start: "2025-09-01", end: "2025-09-01", name: "Labor Day", type: "holiday" },
+      { start: "2026-01-19", end: "2026-01-19", name: "MLK Day", type: "holiday" },
+      { start: "2026-01-02", end: "2026-01-02", name: "President’s Designated Holiday", type: "holiday" },
+      { start: "2025-12-24", end: "2025-12-25", name: "Christmas Holiday", type: "holiday" },
+      { start: "2026-01-01", end: "2026-01-01", name: "New Year’s Day", type: "holiday" },
+      { start: "2026-05-25", end: "2026-05-25", name: "Memorial Day", type: "holiday" },
+      { start: "2026-07-03", end: "2026-07-03", name: "Fourth of July", type: "holiday" },
+
+      // Events (for data, not visual display)
+      { start: "2025-08-09", end: "2025-08-09", name: "Commencement", type: "event" },
+      { start: "2025-12-21", end: "2025-12-21", name: "Commencement", type: "event" },
+      { start: "2026-05-15", end: "2026-05-17", name: "Commencement", type: "event" },
+      { start: "2026-08-08", end: "2026-08-08", name: "Commencement", type: "event" },
+    ],
+  },
 }
 
 // Calendar state
@@ -180,7 +218,7 @@ function initializeToggles() {
 function generateCalendar() {
   const calendarGrid = document.getElementById("calendar-grid")
   const startDate = new Date(2025, 7, 1) // August 2025
-  const endDate = new Date(2026, 5, 30) // June 2026
+  const endDate = new Date(2026, 7, 31) // August 2026 to include all Purdue data
 
   const currentDate = new Date(startDate)
 
@@ -267,28 +305,27 @@ function updateCalendar() {
     const overlappingColleges = getOverlappingColleges(date)
 
     // Reset classes and styles
-    day.className = "day"
+    day.className = "day" // Remove all previous styling classes
     day.style.backgroundColor = ""
     day.style.color = ""
 
-    // Filter out semester-start/end dates from visual display on the calendar
+    // Filter out semester-start/end and event types from visual display on the calendar
     const relevantOverlaps = overlappingColleges.filter(
-      (college) => college.type !== "semester-start" && college.type !== "semester-end",
+      (college) => college.type !== "semester-start" && college.type !== "semester-end" && college.type !== "event",
     )
 
     // Only apply styling if there are relevant overlaps and at least two colleges are active
     if (relevantOverlaps.length > 0 && activeColleges.size > 1) {
-      day.classList.add("has-break")
-
-      // Check if ALL currently active colleges have a relevant overlap on this day
-      // This means the number of relevant overlaps must equal the total number of active colleges
+      // Check if ALL currently active colleges have a relevant overlapping break/holiday on this day.
+      // This means the number of relevant overlaps must equal the total number of *active* colleges.
       if (relevantOverlaps.length === activeColleges.size) {
         day.classList.add("full-overlap") // Solid green
-      } else if (relevantOverlaps.length > 1) {
+      } else if (relevantOverlaps.length > 1 || (activeColleges.size === 2 && relevantOverlaps.length === 1)) {
+        // If multiple (but not all) colleges have relevant overlaps
         day.classList.add("partial-overlap") // Striped lines
       }
     }
-    // Single college breaks and semester dates are not displayed
+    // Single college breaks, semester dates, and events are not displayed
   })
 }
 
@@ -423,12 +460,16 @@ function findOverlappingPeriods() {
   const overlaps = []
   const dateMap = new Map()
 
-  // Build a map of dates to colleges, filtering out semester start/end for overlap calculation
+  // Build a map of dates to colleges, filtering out semester start/end and event types for overlap calculation
   activeColleges.forEach((collegeId) => {
     const college = academicData[collegeId]
     if (college) {
       college.breaks.forEach((breakPeriod) => {
-        if (breakPeriod.type !== "semester-start" && breakPeriod.type !== "semester-end") {
+        if (
+          breakPeriod.type !== "semester-start" &&
+          breakPeriod.type !== "semester-end" &&
+          breakPeriod.type !== "event"
+        ) {
           const startDate = new Date(breakPeriod.start)
           const endDate = new Date(breakPeriod.end)
 
@@ -454,13 +495,12 @@ function findOverlappingPeriods() {
   // Find periods with 2+ colleges
   const overlapPeriods = []
   dateMap.forEach((colleges, date) => {
-    // Only consider overlaps if they involve at least two colleges AND are not semester start/end dates
-    const relevantColleges = colleges.filter((c) => c.type !== "semester-start" && c.type !== "semester-end")
-    if (relevantColleges.length >= 2) {
+    // Only consider overlaps if they involve at least two colleges
+    if (colleges.length >= 2) {
       overlapPeriods.push({
         date: date,
-        colleges: relevantColleges, // Use relevantColleges for grouping
-        count: relevantColleges.length,
+        colleges: colleges,
+        count: colleges.length,
       })
     }
   })
