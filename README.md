@@ -1,6 +1,6 @@
 # README
 ## Break Overlap Calendar
-The Break Overlap Calendar is a **web-based tool** that displays a calendar view of academic breaks across different colleges. It allows users to toggle specific colleges on or off and **visually identify overlapping break periods**. This makes it easy to coordinate shared time off between institutions.
+The [Break Overlap Calendar](https://dishamaheshwari1.github.io/college-break-overlaps/) is a **web-based tool** that displays a calendar view of academic breaks across different colleges. It allows users to toggle specific colleges on or off and **visually identify overlapping break periods**. This makes it easy to coordinate shared time off between institutions.
 ### Features
 - Interactive calendar view for visualizing college breaks
 - Toggle buttons to select which colleges to display
