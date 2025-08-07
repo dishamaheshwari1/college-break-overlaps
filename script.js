@@ -68,12 +68,9 @@ const academicData = {
     color: "#D50000",
     breaks: [
       { start: "2025-11-27", end: "2025-11-30", name: "Thanksgiving Recess", type: "break" },
-      { start: "2025-12-22", end: "2026-01-16", name: "Winter Session", type: "break" },
-      { start: "2026-01-20", end: "2026-01-20", name: "Spring Semester Begins", type: "semester-start" },
+      { start: "2025-12-22", end: "2026-01-19", name: "Winter Session", type: "break" },
       { start: "2026-03-14", end: "2026-03-22", name: "Spring Recess", type: "break" },
-      { start: "2026-05-04", end: "2026-05-04", name: "Spring Semester Ends", type: "semester-end" },
-      { start: "2026-05-17", end: "2026-05-17", name: "Commencement", type: "event" },
-      { start: "2026-05-26", end: "2026-08-19", name: "Summer Session", type: "break" },
+      { start: "2026-05-04", end: "2026-08-04", name: "First Day of Summer Break", type: "holiday" },
     ],
   },
   northeastern: {
